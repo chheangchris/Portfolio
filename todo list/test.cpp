@@ -1,21 +1,21 @@
 #include <iostream>
-#include <string> 
+#include <string>
 #include <list>
 #include <ctime>
 
 class TodoItem {
-    private: 
+private:
     int id;
     std::string description;
     bool completed;
 
 public:
-    TodoItem(): id(0), description(""), completed(false) {}
-    ~TodoItem() = default; 
+    TodoItem() : id(0), description(""), completed(false) {}
+    ~TodoItem() = default;
 
     bool create(std::string new_description) {
-        id = rand() % 100 +1 ;
-        description = new_description; 
+        id = rand() % 100 + 1;
+        description = new_description;
         return true;
     }
 
@@ -23,7 +23,7 @@ public:
     std::string getDescription() { return description; }
     bool isCompleted() { return completed; }
 
-    void setCompleted(bool val) {completed = val; }
+    void setCompleted(bool val) { completed = val; }
 };
 
 int main()
@@ -37,60 +37,78 @@ int main()
 
     srand(time(NULL));
 
-    todoItems.clear();  
+    todoItems.clear();
 
-    //TodoItem test;
-    //test.create("this is a test");
-    //todoItems.push_back(test);
-
-    while(1) {
+    while (1) {
+        // Clear the screen after the input prompt
         system("cls");
-        std::cout << "Todo List Maker - " << version << std::endl;
-        std::cout << std::endl << std::endl;    
         
-        for(it = todoItems.begin(); it != todoItems.end(); it++) {
+        // Display current state
+        std::cout << "Todo List Maker - " << version << std::endl;
+        std::cout << std::endl << std::endl;
+
+        for (it = todoItems.begin(); it != todoItems.end(); it++) {
             std::string completed = it->isCompleted() ? "done" : "not done";
             std::cout << it->getId() << "|" << it->getDescription() << " | "
-                      << completed << std::endl;
+                << completed << std::endl;
         }
 
-        if (todoItems.empty()){
+        if (todoItems.empty()) {
             std::cout << "Add your first todo!" << std::endl;
         }
 
+        std::cout << std::endl << std::endl;
+
         std::cout << "[a]dd a new Todo" << std::endl;
+        std::cout << "[e]dit a existing Todo" << std::endl;
         std::cout << "[c]omplete a Todo" << std::endl;
         std::cout << "[q]uit" << std::endl;
 
         std::cout << "choice: ";
-        std::cin >> input_option; 
+        std::cin >> input_option;
 
-
+        // Handle options
         if (input_option == 'q') {
             std::cout << "Have a great day!" << std::endl;
             break;
-        } 
+        }
         else if (input_option == 'a') {
             std::cout << "Add a new description: ";
-            std::cin.clear();
-            std::cin >> input_description;
+            std::cin.ignore(); // Ignore leftover newline character from previous input
+            std::getline(std::cin, input_description);
 
             TodoItem newItem;
             newItem.create(input_description);
             todoItems.push_back(newItem);
         }
+        else if (input_option == 'e'){
+            std::cout << "Enter an id to edit: " << std::endl;
+            std::cin >> input_id;
+
+            bool found = false;
+            for (it - todoItems.begin(); it != todoItems.end(); it++) {
+                if (input_id == it->getID()) {
+                    found = true;
+                    std::cout << "Current Todo: " << it->getDescription() << std::endl;
+                    std::cout "Enter new Todo: ";
+                    std::cin.ignore();
+                    std::getline(std::cin, input_description);
+                }
+            }
+        }
+
         else if (input_option == 'c') {
             std::cout << "Enter id to mark completed: " << std::endl;
             std::cin >> input_id;
 
-            for(it = todoItems.begin(); it != todoItems.end(); it++) {
-                if (input_id == it->getId()){
+            for (it = todoItems.begin(); it != todoItems.end(); it++) {
+                if (input_id == it->getId()) {
                     it->setCompleted(true);
                     break;
                 }
             }
         }
-    } 
+    }
 
-    return 0;  
+    return 0;
 }
