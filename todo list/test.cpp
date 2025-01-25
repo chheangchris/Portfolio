@@ -60,7 +60,7 @@ int main()
         std::cout << std::endl << std::endl;
 
         std::cout << "[a]dd a new Todo" << std::endl;
-        std::cout << "[e]dit a existing Todo" << std::endl;
+        std::cout << "[r]emove a Todo" << std::endl;
         std::cout << "[c]omplete a Todo" << std::endl;
         std::cout << "[q]uit" << std::endl;
 
@@ -81,21 +81,6 @@ int main()
             newItem.create(input_description);
             todoItems.push_back(newItem);
         }
-        else if (input_option == 'e'){
-            std::cout << "Enter an id to edit: " << std::endl;
-            std::cin >> input_id;
-
-            bool found = false;
-            for (it - todoItems.begin(); it != todoItems.end(); it++) {
-                if (input_id == it->getID()) {
-                    found = true;
-                    std::cout << "Current Todo: " << it->getDescription() << std::endl;
-                    std::cout "Enter new Todo: ";
-                    std::cin.ignore();
-                    std::getline(std::cin, input_description);
-                }
-            }
-        }
 
         else if (input_option == 'c') {
             std::cout << "Enter id to mark completed: " << std::endl;
@@ -104,6 +89,18 @@ int main()
             for (it = todoItems.begin(); it != todoItems.end(); it++) {
                 if (input_id == it->getId()) {
                     it->setCompleted(true);
+                    break;
+                }
+            }
+        }
+        else if (input_option == 'r') {
+            std::cout << "Enter id to remove a Todo: " << std::endl;
+            std::cin >> input_id;
+
+            for (it = todoItems.begin(); it != todoItems.end(); it++) {
+                if (input_id == it->getId()) {
+                    todoItems.erase(it);
+                    std::cout << "Todo item removed successfully!" << std::endl;
                     break;
                 }
             }
